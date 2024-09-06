@@ -1,5 +1,8 @@
 <footer class="footer">
-  <p class="footer__copy">Realizaod por <strong>@copy Kevin Rivera</strong></p>
+  <p class="footer__copy" id="copy">
+    Realizaod por <strong id="anio"></strong>
+    <strong>&copy; Kevin Rivera</strong>
+  </p>
 </footer>
 
 <style lang="scss">
@@ -14,3 +17,9 @@
     }
   }
 </style>
+
+<script>
+  (document.getElementById("anio") as HTMLElement).textContent = new Date()
+    .getFullYear()
+    .toString();
+</script>
