@@ -54,7 +54,10 @@ import Layout from "../layouts/Layout.astro";
       }
 
       &__warning {
-        color: rgb(176, 176, 176);
+        color: rgb(120, 120, 120);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
       }
       &__btn {
         margin-top: 1rem;
@@ -126,16 +129,43 @@ import Layout from "../layouts/Layout.astro";
         &--text {
           font-weight: bold;
           font-size: 1.5rem;
+          padding: 0.5rem;
         }
         &--info {
           font-size: 1rem;
+        }
+      }
+      &__copy {
+        width: 100%;
+        height: 6rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .copy__btn {
+          cursor: pointer;
+          padding: 1rem;
+          border-radius: 1rem;
+          background: rgb(103, 103, 103);
+          color: white;
+          font-size: 1;
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+
+          &:hover {
+            background: rgb(69, 69, 69);
+          }
         }
       }
     }
   }
 </style>
 
-<Layout title="Encriptador de Texto">
+<Layout
+  title="Encriptador de Texto"
+  description="Encriptador de texto reto de HTML, CSS Y JS"
+>
   <Header />
   <main>
     <section class="encrypt">
@@ -144,9 +174,23 @@ import Layout from "../layouts/Layout.astro";
           class="encrypt__textarea"
           name="text-encrypt"
           id="text-encrypt"
-          placeholder="Ingrese su texto aquí"></textarea>
+          placeholder="Ingrese su texto aquí ..."></textarea>
         <small class="encrypt__warning"
-          >Ingrese solo letras no se permite números</small
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-triangle-alert"
+            ><path
+              d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"
+            ></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg
+          > Ingrese solo letras no se permite números</small
         >
         <div class="encrypt__btn">
           <button class="btn encrypt__btn--encriptar" type="submit">
@@ -167,6 +211,25 @@ import Layout from "../layouts/Layout.astro";
         >
         <small class="message__content--info"
           >Ingresa el tetxo que desees encriptar o desencriptar</small
+        >
+      </div>
+      <div class="message__copy">
+        <button id="copyBtn" class="copy__btn"
+          >Copiar Texto <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-copy"
+            ><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path
+              d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
+            ></path></svg
+          ></button
         >
       </div>
     </section>
@@ -218,11 +281,11 @@ import Layout from "../layouts/Layout.astro";
         textMessage1.innerText = "Texto encriptado correctamente!";
         textMessage2.innerText = "Puedes copiar el texto para desencriptarlo.";
 
-        alert("Se encripto correctamente")
+        alert("Se encripto correctamente");
       }
     });
 
-    function desencriptar(text, shift) {
+    function desencriptar(text: string, shift: number) {
       const alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
       const shiftAlfabeto = alfabeto.slice(-shift) + alfabeto.slice(0, -shift);
 
