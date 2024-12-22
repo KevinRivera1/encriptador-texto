@@ -214,7 +214,7 @@ import Layout from "../layouts/Layout.astro";
         >
       </div>
       <div class="message__copy">
-        <button id="copyBtn" class="copy__btn"
+        <button id="encrypt__btn--copiar" class="copy__btn"
           >Copiar Texto <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -246,69 +246,98 @@ import Layout from "../layouts/Layout.astro";
     const btnDesencriptar = document.querySelector(
       ".encrypt__btn--desencriptar"
     ) as HTMLButtonElement;
-    const btnEncriptar = document.querySelector(
-      ".encrypt__btn--encriptar"
-    ) as HTMLButtonElement;
-    const resultText = document.getElementById("resultText") as HTMLElement;
-    const img = document.getElementById("img") as HTMLImageElement;
-
+    const resultText = document.getElementById(
+      "resultText"
+    ) as HTMLParagraphElement;
     const textMessage1 = document.querySelectorAll(
       ".message__content--info"
-    )[0] as HTMLElement;
+    )[0] as HTMLParagraphElement;
     const textMessage2 = document.querySelectorAll(
       ".message__content--info"
-    )[1] as HTMLElement;
+    )[1] as HTMLParagraphElement;
+    const btnCopiar = document.getElementById(
+      "encrypt__btn--copiar"
+    ) as HTMLButtonElement;
+    const ALPHABET =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" as const;
+    const SPACE_PLACEHOLDER = "#$%&*" as const;
 
-    function encriptar(text: string, shift: number) {
-      const alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-      const shiftAlfabeto = alfabeto.slice(shift) + alfabeto.slice(0, shift);
+    const shiftText = (text, shift, direction) => {
+      if (!text) return "";
+
+      const shiftAlphabet =
+        direction === "encrypt"
+          ? ALPHABET.slice(shift) + ALPHABET.slice(0, shift)
+          : ALPHABET.slice(-shift) + ALPHABET.slice(0, -shift);
+
       return text
+        .replaceAll(
+          direction === "encrypt" ? " " : SPACE_PLACEHOLDER,
+          direction === "encrypt" ? SPACE_PLACEHOLDER : " "
+        )
         .split("")
         .map((char) => {
-          const index = alfabeto.indexOf(char);
-          return index !== -1 ? shiftAlfabeto[index] : char;
+          const index = ALPHABET.indexOf(char);
+          return index !== -1 ? shiftAlphabet[index] : char;
         })
         .join("");
-    }
+    };
 
-    form.addEventListener("submit", (e: Event) => {
+    const showMessage = (message1, message2) => {
+      textMessage1.innerText = message1;
+      textMessage2.innerText = message2;
+    };
+
+    const copyToClipboard = (text) => {
+      navigator.clipboard.writeText(text).then(
+        () => {
+          alert("Texto copiado al portapapeles.");
+        },
+        () => {
+          alert("No se pudo copiar el texto.");
+        }
+      );
+    };
+
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
-      if (inputTextArea && resultText) {
-        const text = inputTextArea.value;
-        const shift = 3;
-        const textEncriptado = encriptar(text, shift);
-        resultText.innerText = textEncriptado;
-        textMessage1.innerText = "Texto encriptado correctamente!";
-        textMessage2.innerText = "Puedes copiar el texto para desencriptarlo.";
-
-        alert("Se encripto correctamente");
+      const text = inputTextArea.value.trim();
+      if (!text) {
+        alert("Por favor, ingresa un texto para encriptar.");
+        return;
       }
+      const encryptedText = shiftText(text, 3, "encrypt");
+      resultText.innerText = encryptedText;
+      showMessage(
+        "Texto encriptado correctamente!",
+        "Puedes copiar el texto para desencriptarlo."
+      );
+      alert("Se encriptó correctamente.");
     });
 
-    function desencriptar(text: string, shift: number) {
-      const alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-      const shiftAlfabeto = alfabeto.slice(-shift) + alfabeto.slice(0, -shift);
-
-      return text
-        .split("")
-        .map((char) => {
-          const index = alfabeto.indexOf(char);
-          return index !== -1 ? shiftAlfabeto[index] : char;
-        })
-        .join("");
-    }
-
-    btnDesencriptar.addEventListener("click", (e: Event) => {
+    btnDesencriptar.addEventListener("click", (e) => {
       e.preventDefault();
-      if (inputTextArea && resultText) {
-        const text = inputTextArea.value;
-        const shift = 3;
-        const textDesencriptado = desencriptar(text, shift);
-        resultText.innerText = textDesencriptado;
-        textMessage1.innerText = "Texto desencriptado correctamente!";
-        textMessage2.innerText =
-          "Puedes copiar el texto o encriptarlo de nuevo.";
+      const text = resultText.innerText.trim();
+      if (!text) {
+        alert("Por favor, ingresa un texto para desencriptar.");
+        return;
       }
+      const decryptedText = shiftText(text, 3, "decrypt");
+      resultText.innerText = decryptedText;
+      showMessage(
+        "Texto desencriptado correctamente!",
+        "Puedes copiar el texto o encriptarlo de nuevo."
+      );
+    });
+
+    btnCopiar.addEventListener("click", (e) => {
+      e.preventDefault();
+      const text = resultText.innerText.trim();
+      if (!text) {
+        alert("No hay texto para copiar.");
+        return;
+      }
+      copyToClipboard(text);
     });
   });
 </script>
