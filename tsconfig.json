@@ -1,3 +1,23 @@
 {
-  "extends": "astro/tsconfigs/base"
+  "extends": "astro/tsconfigs/base",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@pages/*": [
+        "src/pages/*"
+      ],
+      "@ui/*": [
+        "src/ui/*"
+      ],
+      "@shared/*": [
+        "src/shared/*"
+      ]
+    }
+  }
 }
