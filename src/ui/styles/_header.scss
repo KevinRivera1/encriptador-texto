@@ -1,0 +1,13 @@
+.logo {
+    padding-block: 1rem;
+
+    .logo__img {
+        margin   : 0 auto;
+        max-width: 75rem;
+
+        img {
+            height: 1.5rem;
+            width : auto;
+        }
+    }
+}
