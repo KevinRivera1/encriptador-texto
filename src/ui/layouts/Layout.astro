@@ -1,0 +1,27 @@
+---
+import ImageEncypt from '../../../public/buscador.png';
+import HeadSeo from '../components/SEO/HeadSeo.astro';
+import '../styles/main.scss';
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href={ImageEncypt.src} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+
+    <HeadSeo title={title} description={description} image={ImageEncypt.src} url="https://kevinrivera1.github.io/encriptador-texto" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

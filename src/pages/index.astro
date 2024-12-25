@@ -1,314 +1,176 @@
 ---
+import Footer from "@/ui/components/Footer.astro";
+import Header from "@/ui/components/Header.astro";
+import Layout from "@/ui/layouts/Layout.astro";
 import buscador from "../../public/buscador.png";
-import Footer from "../components/Footer.astro";
-import Header from "../components/Header.astro";
-import Layout from "../layouts/Layout.astro";
 ---
-
-<style lang="scss">
-  main {
-    height: 100%;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: justify;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-
-    @media (max-width: 768px) {
-      flex-direction: column;
-    }
-
-    .encrypt {
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-      flex-grow: 1;
-      -ms-flex-preferred-size: 0;
-      flex-basis: 0;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      align-items: center;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      justify-content: center;
-
-      &__form {
-        width: 100%;
-        height: 100%;
-        padding: 2rem;
-      }
-      &__textarea {
-        width: 100%;
-        height: 24rem;
-        font-size: 1rem;
-        resize: none;
-        background: transparent;
-        border: none;
-
-        &:focus {
-          outline: none;
-        }
-      }
-
-      &__warning {
-        color: rgb(120, 120, 120);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-      &__btn {
-        margin-top: 1rem;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-pack: distribute;
-        justify-content: space-around;
-        gap: 1rem;
-        .btn {
-          padding: 1rem 1.5rem;
-          width: 100%;
-          border-radius: 18rem;
-        }
-        &--encriptar {
-          background: blue;
-          color: white;
-          font-size: 1rem;
-          font-weight: bold;
-        }
-        &--desencriptar {
-          background: transparent;
-          color: black;
-          font-size: 1rem;
-          font-weight: bold;
-          outline: 1px solid black;
-        }
-      }
-    }
-
-    .message {
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      justify-content: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      align-items: center;
-      -webkit-box-orient: vertical;
-      -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-      flex-direction: column;
-      -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-      flex-grow: 1;
-      -ms-flex-preferred-size: 0;
-      flex-basis: 0;
-      margin: 0 auto;
-      &__image {
-        .img {
-          width: 80%;
-          text-align: center;
-          -webkit-filter: drop-shadow(5px 5px 15px rgb(12, 226, 59));
-          filter: drop-shadow(5px 5px 15px rgb(12, 226, 59));
-        }
-      }
-      &__content {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-        flex-direction: column;
-        text-align: center;
-
-        &--text {
-          font-weight: bold;
-          font-size: 1.5rem;
-          padding: 0.5rem;
-        }
-        &--info {
-          font-size: 1rem;
-        }
-      }
-      &__copy {
-        width: 100%;
-        height: 6rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        .copy__btn {
-          cursor: pointer;
-          padding: 1rem;
-          border-radius: 1rem;
-          background: rgb(103, 103, 103);
-          color: white;
-          font-size: 1;
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-
-          &:hover {
-            background: rgb(69, 69, 69);
-          }
-        }
-      }
-    }
-  }
-</style>
 
 <Layout
   title="Encriptador de Texto"
   description="Encriptador de texto reto de HTML, CSS Y JS"
 >
   <Header />
-  <main>
-    <section class="encrypt">
-      <form id="encryptForm" class="encrypt__form">
-        <textarea
-          class="encrypt__textarea"
-          name="text-encrypt"
-          id="text-encrypt"
-          placeholder="Ingrese su texto aquí ..."></textarea>
-        <small class="encrypt__warning"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-triangle-alert"
-            ><path
-              d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"
-            ></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg
-          > Ingrese solo letras no se permite números</small
-        >
-        <div class="encrypt__btn">
-          <button class="btn encrypt__btn--encriptar" type="submit">
-            Encriptar
-          </button>
-          <button class="btn encrypt__btn--desencriptar"> Desencriptar </button>
+  <main class="main">
+    <div class="container">
+      <section class="encrypt">
+        <form id="encryptForm" class="encrypt__form">
+          <textarea
+            class="encrypt__textarea"
+            name="text-encrypt"
+            id="text-encrypt"
+            placeholder="Ingrese su texto aquí ..."></textarea>
+          <small class="encrypt__warning"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-triangle-alert"
+              ><path
+                d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"
+              ></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg
+            > Ingrese solo letras no se permite números</small
+          >
+          <div class="encrypt__btn">
+            <button class="btn encrypt__btn--encriptar" type="submit">
+              Encriptar
+            </button>
+            <button class="btn encrypt__btn--desencriptar">
+              Desencriptar
+            </button>
+          </div>
+        </form>
+      </section>
+      <section class="message">
+        <figure class="message__image">
+          <img class="img" src={buscador.src} alt="Imagen mensaje" id="img" />
+        </figure>
+        <div class="message">
+          <div class="message__content">
+            <input
+              class="message__text"
+              id="resultText"
+              type="text"
+              placeholder="El Resultado aparecerá aquí..."
+              readonly
+            />
+            <button id="message__btn-copy" class="message__btn">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="message__icon"
+              >
+                <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+                <path
+                  d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
+                ></path>
+              </svg>
+            </button>
+          </div>
+          <small class="message__info">Ningún mensaje fue encontrado</small>
+          <small class="message__info"
+            >Ingresa el texto que desees encriptar o desencriptar</small
+          >
         </div>
-      </form>
-    </section>
-    <section class="message">
-      <figure class="message__image">
-        <img class="img" src={buscador.src} alt="Imagen mensaje" id="img" />
-      </figure>
-      <div class="message__content">
-        <p class="message__content--text" id="resultText"></p>
-        <small class="message__content--info"
-          >Ningun mensaje fue encontrado</small
-        >
-        <small class="message__content--info"
-          >Ingresa el tetxo que desees encriptar o desencriptar</small
-        >
-      </div>
-      <div class="message__copy">
-        <button id="copyBtn" class="copy__btn"
-          >Copiar Texto <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-copy"
-            ><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path
-              d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
-            ></path></svg
-          ></button
-        >
-      </div>
-    </section>
+      </section>
+    </div>
   </main>
-  <Footer />
 </Layout>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("encryptForm") as HTMLFormElement;
+    const form = document.getElementById(
+      "encryptForm"
+    ) as HTMLFormElement | null;
     const inputTextArea = document.getElementById(
       "text-encrypt"
-    ) as HTMLTextAreaElement;
+    ) as HTMLTextAreaElement | null;
     const btnDesencriptar = document.querySelector(
       ".encrypt__btn--desencriptar"
-    ) as HTMLButtonElement;
-    const btnEncriptar = document.querySelector(
-      ".encrypt__btn--encriptar"
-    ) as HTMLButtonElement;
-    const resultText = document.getElementById("resultText") as HTMLElement;
-    const img = document.getElementById("img") as HTMLImageElement;
+    ) as HTMLButtonElement | null;
+    const resultInput = document.getElementById(
+      "resultText"
+    ) as HTMLInputElement | null;
+    const btnCopiar = document.getElementById(
+      "message__btn-copy"
+    ) as HTMLButtonElement | null;
 
-    const textMessage1 = document.querySelectorAll(
-      ".message__content--info"
-    )[0] as HTMLElement;
-    const textMessage2 = document.querySelectorAll(
-      ".message__content--info"
-    )[1] as HTMLElement;
+    const ALPHABET =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" as const;
+    const SPACE_PLACEHOLDER = "#$%&*" as const;
 
-    function encriptar(text: string, shift: number) {
-      const alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-      const shiftAlfabeto = alfabeto.slice(shift) + alfabeto.slice(0, shift);
+    const shiftText = (
+      text: string,
+      shift: number,
+      direction: "encrypt" | "decrypt"
+    ): string => {
+      if (!text) return "";
+
+      const shiftAlphabet =
+        direction === "encrypt"
+          ? ALPHABET.slice(shift) + ALPHABET.slice(0, shift)
+          : ALPHABET.slice(-shift) + ALPHABET.slice(0, -shift);
+
       return text
+        .replaceAll(
+          direction === "encrypt" ? " " : SPACE_PLACEHOLDER,
+          direction === "encrypt" ? SPACE_PLACEHOLDER : " "
+        )
         .split("")
         .map((char) => {
-          const index = alfabeto.indexOf(char);
-          return index !== -1 ? shiftAlfabeto[index] : char;
+          const index = ALPHABET.indexOf(char);
+          return index !== -1 ? shiftAlphabet[index] : char;
         })
         .join("");
-    }
+    };
 
-    form.addEventListener("submit", (e: Event) => {
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
-      if (inputTextArea && resultText) {
-        const text = inputTextArea.value;
-        const shift = 3;
-        const textEncriptado = encriptar(text, shift);
-        resultText.innerText = textEncriptado;
-        textMessage1.innerText = "Texto encriptado correctamente!";
-        textMessage2.innerText = "Puedes copiar el texto para desencriptarlo.";
-
-        alert("Se encripto correctamente");
+      const text = inputTextArea.value.trim();
+      if (!text) {
+        alert("Por favor, ingresa un texto para encriptar.");
+        return;
       }
+      const encryptedText = shiftText(text, 3, "encrypt");
+      resultInput.value = encryptedText;
+      alert("Texto encriptado correctamente.");
     });
 
-    function desencriptar(text: string, shift: number) {
-      const alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-      const shiftAlfabeto = alfabeto.slice(-shift) + alfabeto.slice(0, -shift);
-
-      return text
-        .split("")
-        .map((char) => {
-          const index = alfabeto.indexOf(char);
-          return index !== -1 ? shiftAlfabeto[index] : char;
-        })
-        .join("");
-    }
-
-    btnDesencriptar.addEventListener("click", (e: Event) => {
+    btnDesencriptar.addEventListener("click", (e) => {
       e.preventDefault();
-      if (inputTextArea && resultText) {
-        const text = inputTextArea.value;
-        const shift = 3;
-        const textDesencriptado = desencriptar(text, shift);
-        resultText.innerText = textDesencriptado;
-        textMessage1.innerText = "Texto desencriptado correctamente!";
-        textMessage2.innerText =
-          "Puedes copiar el texto o encriptarlo de nuevo.";
+      const text = resultInput.value.trim();
+      if (!text) {
+        alert("Por favor, ingresa un texto para desencriptar.");
+        return;
       }
+      const decryptedText = shiftText(text, 3, "decrypt");
+      resultInput.value = decryptedText;
+      alert("Texto desencriptado correctamente.");
+    });
+
+    btnCopiar.addEventListener("click", (e) => {
+      e.preventDefault();
+      const text = resultInput.value.trim();
+      if (!text) {
+        alert("No hay texto para copiar.");
+        return;
+      }
+      navigator.clipboard.writeText(text).then(
+        () => alert("Texto copiado al portapapeles."),
+        () => alert("No se pudo copiar el texto.")
+      );
     });
   });
 </script>
