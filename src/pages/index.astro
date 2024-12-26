@@ -2,7 +2,7 @@
 import Footer from "@/ui/components/Footer.astro";
 import Header from "@/ui/components/Header.astro";
 import Layout from "@/ui/layouts/Layout.astro";
-import buscador from "../../public/buscador.png";
+import buscador from "../../public/buscador.webp";
 ---
 
 <Layout
@@ -48,7 +48,7 @@ import buscador from "../../public/buscador.png";
       </section>
       <section class="message">
         <figure class="message__image">
-          <img class="img" src={buscador.src} alt="Imagen mensaje" id="img" />
+          <img class="img" src={buscador.src} alt="Imagen mensaje" id="img" loading="lazy"/>
         </figure>
         <div class="message">
           <div class="message__content">
