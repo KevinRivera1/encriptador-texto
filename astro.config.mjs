@@ -5,7 +5,7 @@ import {
 // https://astro.build/config
 export default defineConfig({
     site: "https://kevinrivera1.github.io/",
-    base: "encriptador-texto",
+    base: "/encriptador-texto/",
     vite: {
         css: {
             transformer: 'postcss'
