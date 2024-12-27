@@ -1,54 +1,142 @@
-# Astro Starter Kit: Basics
+# Encriptador desde Cero
 
-```sh
-npm create astro@latest -- --template basics
+Este proyecto es una aplicación para encriptar y desencriptar textos utilizando un sistema de sustitución basado en un desplazamiento de caracteres (Cifrado César). Además, está estructurado con un diseño modular que sigue buenas prácticas de organización de código.
+
+---
+
+## Tabla de Contenidos
+1. [Estructura del Proyecto](#estructura-del-proyecto)
+2. [Tecnologías Utilizadas](#tecnologias-utilizadas)
+3. [Instalación y Configuración](#instalacion-y-configuracion)
+4. [Uso de la Aplicación](#uso-de-la-aplicacion)
+
+---
+
+## Estructura del Proyecto
+
+El proyecto tiene la siguiente estructura:
+
+```plaintext
+└── 📁src
+    └── 📁app
+        └── 📁application
+        └── 📁core
+        └── 📁infrastructure
+    └── 📁pages
+        └── index.astro
+    └── 📁shared
+        └── 📁constants
+    └── 📁ui
+        └── 📁components
+            └── Footer.astro
+            └── Header.astro
+            └── 📁SEO
+                └── HeadSeo.astro
+        └── 📁layouts
+            └── Layout.astro
+        └── 📁styles
+            └── _footer.scss
+            └── _header.scss
+            └── _page.scss
+            └── _reset.scss
+            └── main.scss
+    └── env.d.ts
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+- **src/app**: Contiene la lógica principal de la aplicación.
+  - **application**: Lógica de negocio y casos de uso.
+  - **core**: Reglas y elementos fundamentales del dominio.
+  - **infrastructure**: Implementaciones técnicas (e.g., acceso a datos, servicios).
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+- **src/pages**: Páginas principales del proyecto.
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+- **src/shared**: Recursos compartidos como constantes o utilidades.
 
-## 🚀 Project Structure
+- **src/ui**: Componentes de la interfaz de usuario.
+  - **components**: Componentes reutilizables como Header, Footer y SEO.
+  - **layouts**: Estructuras de diseño para páginas.
+  - **styles**: Archivos de estilos SCSS.
 
-Inside of your Astro project, you'll see the following folders and files:
+---
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+## Tecnologías Utilizadas
+
+- **Astro**: Framework para construir páginas rápidas y modernas.
+- **JavaScript/TypeScript**: Lenguajes principales del desarrollo.
+- **SCSS**: Preprocesador CSS para organizar y mejorar los estilos.
+- **Bun**: Herramienta para compilar y servir el proyecto.
+
+---
+
+## Instalación y Configuración
+
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/KevinRivera1/encriptador-texto.git
+   ```
+
+2. Accede al directorio del proyecto:
+   ```bash
+   cd encriptador
+   ```
+
+3. Instala las dependencias:
+   ```bash
+   npm install
+   bun install
+   ```
+
+4. Inicia el entorno de desarrollo:
+   ```bash
+   npm run dev
+   bun run dev
+   ```
+
+---
+
+## Uso de la Aplicación
+
+1. **Encriptar Texto**:
+   - Ingresa el texto deseado en el campo de entrada.
+   - Haz clic en el botón "Encriptar" para obtener el texto encriptado.
+
+2. **Desencriptar Texto**:
+   - Ingresa un texto previamente encriptado.
+   - Haz clic en el botón "Desencriptar" para ver el texto original.
+
+3. **Copiar al Portapapeles**:
+   - Haz clic en el botón "Copiar" para copiar el resultado al portapapeles.
+
+---
+
+## Código Principal
+
+```typescript
+const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" as const;
+const SPACE_PLACEHOLDER = "#$%&*" as const;
+
+const shiftText = (
+  text: string,
+  shift: number,
+  direction: "encrypt" | "decrypt"
+): string => {
+  if (!text) return "";
+
+  const shiftAlphabet =
+    direction === "encrypt"
+      ? ALPHABET.slice(shift) + ALPHABET.slice(0, shift)
+      : ALPHABET.slice(-shift) + ALPHABET.slice(0, -shift);
+
+  return text
+    .replaceAll(
+      direction === "encrypt" ? " " : SPACE_PLACEHOLDER,
+      direction === "encrypt" ? SPACE_PLACEHOLDER : " "
+    )
+    .split("")
+    .map((char) => {
+      const index = ALPHABET.indexOf(char);
+      return index !== -1 ? shiftAlphabet[index] : char;
+    })
+    .join("");
+};
 ```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
