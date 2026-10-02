@@ -48,7 +48,13 @@ import buscador from "../../public/buscador.webp";
       </section>
       <section class="message">
         <figure class="message__image">
-          <img class="img" src={buscador.src} alt="Imagen mensaje" id="img" loading="lazy"/>
+          <img
+            class="img"
+            src={buscador.src}
+            alt="Imagen mensaje"
+            id="img"
+            loading="lazy"
+          />
         </figure>
         <div class="message">
           <div class="message__content">
@@ -91,86 +97,186 @@ import buscador from "../../public/buscador.webp";
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
+
+    const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    const SPACE_PLACEHOLDER = "#$%&*";
+    const SHIFT = 3;
+
     const form = document.getElementById(
-      "encryptForm"
+      "encryptForm",
     ) as HTMLFormElement | null;
+
     const inputTextArea = document.getElementById(
-      "text-encrypt"
+      "text-encrypt",
     ) as HTMLTextAreaElement | null;
+
     const btnDesencriptar = document.querySelector(
-      ".encrypt__btn--desencriptar"
-    ) as HTMLButtonElement | null;
-    const resultInput = document.getElementById(
-      "resultText"
-    ) as HTMLInputElement | null;
-    const btnCopiar = document.getElementById(
-      "message__btn-copy"
+      ".encrypt__btn--desencriptar",
     ) as HTMLButtonElement | null;
 
-    const ALPHABET =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" as const;
-    const SPACE_PLACEHOLDER = "#$%&*" as const;
+    const resultInput = document.getElementById(
+      "resultText",
+    ) as HTMLInputElement | null;
+
+    const btnCopiar = document.getElementById(
+      "message__btn-copy",
+    ) as HTMLButtonElement | null;
+
+    // =========================
+    // Validaciones
+    // =========================
+
+    const validateElements = (): boolean => {
+      if (!form) {
+        console.error("No se encontró el formulario.");
+        return false;
+      }
+
+      if (!inputTextArea) {
+        console.error("No se encontró el textarea.");
+        return false;
+      }
+
+      if (!btnDesencriptar) {
+        console.error("No se encontró el botón de desencriptar.");
+        return false;
+      }
+
+      if (!resultInput) {
+        console.error("No se encontró el campo de resultado.");
+        return false;
+      }
+
+      if (!btnCopiar) {
+        console.error("No se encontró el botón de copiar.");
+        return false;
+      }
+
+      return true;
+    };
+
+    // =========================
+    // Funciones de encriptado
+    // =========================
 
     const shiftText = (
       text: string,
       shift: number,
-      direction: "encrypt" | "decrypt"
+      direction: "encrypt" | "decrypt",
     ): string => {
       if (!text) return "";
 
+      const normalizedShift = shift % ALPHABET.length;
+
       const shiftAlphabet =
         direction === "encrypt"
-          ? ALPHABET.slice(shift) + ALPHABET.slice(0, shift)
-          : ALPHABET.slice(-shift) + ALPHABET.slice(0, -shift);
+          ? ALPHABET.slice(normalizedShift) + ALPHABET.slice(0, normalizedShift)
+          : ALPHABET.slice(-normalizedShift) +
+            ALPHABET.slice(0, -normalizedShift);
+
+      const space = direction === "encrypt" ? " " : SPACE_PLACEHOLDER;
+
+      const replacement = direction === "encrypt" ? SPACE_PLACEHOLDER : " ";
 
       return text
-        .replaceAll(
-          direction === "encrypt" ? " " : SPACE_PLACEHOLDER,
-          direction === "encrypt" ? SPACE_PLACEHOLDER : " "
-        )
+        .replaceAll(space, replacement)
         .split("")
         .map((char) => {
           const index = ALPHABET.indexOf(char);
-          return index !== -1 ? shiftAlphabet[index] : char;
+
+          if (index === -1) {
+            return char;
+          }
+
+          return shiftAlphabet[index];
         })
         .join("");
     };
 
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const text = inputTextArea.value.trim();
+    const encryptText = (text: string): string => {
+      return shiftText(text, SHIFT, "encrypt");
+    };
+
+    const decryptText = (text: string): string => {
+      return shiftText(text, SHIFT, "decrypt");
+    };
+
+    // =========================
+    // Operaciones
+    // =========================
+
+    const handleEncrypt = (): void => {
+      const text = inputTextArea!.value.trim();
+
       if (!text) {
         alert("Por favor, ingresa un texto para encriptar.");
         return;
       }
-      const encryptedText = shiftText(text, 3, "encrypt");
-      resultInput.value = encryptedText;
-      alert("Texto encriptado correctamente.");
-    });
+      const encryptedText = encryptText(text);
 
-    btnDesencriptar.addEventListener("click", (e) => {
-      e.preventDefault();
-      const text = resultInput.value.trim();
+      resultInput!.value = encryptedText;
+
+      alert("Texto encriptado correctamente.");
+    };
+
+    const handleDecrypt = (): void => {
+      const text = resultInput!.value.trim();
+
       if (!text) {
         alert("Por favor, ingresa un texto para desencriptar.");
         return;
       }
-      const decryptedText = shiftText(text, 3, "decrypt");
-      resultInput.value = decryptedText;
-      alert("Texto desencriptado correctamente.");
-    });
 
-    btnCopiar.addEventListener("click", (e) => {
-      e.preventDefault();
-      const text = resultInput.value.trim();
+      const decryptedText = decryptText(text);
+
+      resultInput!.value = decryptedText;
+
+      alert("Texto desencriptado correctamente.");
+    };
+
+    const handleCopy = (): void => {
+      const text = resultInput!.value.trim();
+
       if (!text) {
         alert("No hay texto para copiar.");
         return;
       }
+
       navigator.clipboard.writeText(text).then(
         () => alert("Texto copiado al portapapeles."),
-        () => alert("No se pudo copiar el texto.")
+        () => alert("No se pudo copiar el texto."),
       );
-    });
+    };
+
+    // =========================
+    // Eventos
+    // =========================
+
+    const initializeEvents = (): void => {
+      form!.addEventListener("submit", (event) => {
+        event.preventDefault();
+        handleEncrypt();
+      });
+
+      btnDesencriptar!.addEventListener("click", (event) => {
+        event.preventDefault();
+        handleDecrypt();
+      });
+
+      btnCopiar!.addEventListener("click", (event) => {
+        event.preventDefault();
+        handleCopy();
+      });
+    };
+
+    // =========================
+    // Inicialización
+    // =========================
+
+    if (!validateElements()) {
+      return;
+    }
+
+    initializeEvents();
   });
 </script>
